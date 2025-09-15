@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disclaimer Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            position: relative;
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .qr-code {
+            width: 100px;
+            height: 100px;
+        }
+        h1 {
+            color: #333;
+            margin: 0;
+            font-size: 2.5em;
+        }
+        .form-container {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 600px;
+            margin-top: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="date"],
+        input[type="time"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 5px;
+        }
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-container">
+        <h1>Disclaimer Form</h1>
+        <img class="qr-code" src="https://via.placeholder.com/100" alt="QR Code">
+    </div>
+
+    <div class="form-container">
+        <p>Please fill in and submit this form before starting your course/event. If no form is submitted, we will take it that the room has been handed over in acceptable conditions.</p>
+        <form id="disclaimerForm">
+            <div class="form-group">
+                <label for="name">1) Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="venue">2) Venue:</label>
+                <input type="text" id="venue" name="venue" required>
+            </div>
+
+            <div class="form-group">
+                <label for="event">3) Event/Course:</label>
+                <input type="text" id="event" name="event" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="date">4) Date:</label>
+                <input type="date" id="date" name="date" required>
+            </div>
+
+            <div class="form-group">
+                <label for="time">5) Time:</label>
+                <input type="time" id="time" name="time" required>
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+                <label>6) When taking over the room for the course/event, are all tables and chairs in the correct position? (please refer to the posters on the wall for the default room layout)</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="tables_chairs_correct" value="yes" required> Yes</label>
+                    <label><input type="radio" name="tables_chairs_correct" value="no"> No</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>7) When taking over the room for the course/event, is everything in working and operating conditions? e.g. room cleanliness, lights working, projector working (depending on room).</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="room_conditions_ok" value="yes" required> Yes</label>
+                    <label><input type="radio" name="room_conditions_ok" value="no"> No</label>
+                </div>
+            </div>
+            
+            <button type="button" onclick="submitFormToEmail()">Submit Form</button>
+        </form>
+    </div>
+
+    <script>
+        function submitFormToEmail() {
+            const name = document.getElementById('name').value;
+            const venue = document.getElementById('venue').value;
+            const event = document.getElementById('event').value;
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            
+            // Check if radio buttons are selected before getting their values
+            const tablesChairsRadio = document.querySelector('input[name="tables_chairs_correct"]:checked');
+            const roomConditionsRadio = document.querySelector('input[name="room_conditions_ok"]:checked');
+
+            // This is the crucial check to prevent the blank page issue
+            if (!name || !venue || !event || !date || !time || !tablesChairsRadio || !roomConditionsRadio) {
+                alert("Please fill out all form fields.");
+                return; // Stop the function if any field is empty
+            }
+
+            const tablesChairs = tablesChairsRadio.value;
+            const roomConditions = roomConditionsRadio.value;
+            
+            const emailBody = `
+                1) Name: ${name}
+                2) Venue: ${venue}
+                3) Event/Course: ${event}
+                4) Date: ${date}
+                5) Time: ${time}
+                6) Tables and Chairs Correct: ${tablesChairs}
+                7) Room Conditions Okay: ${roomConditions}
+            `;
+
+            const mailtoLink = `mailto:terencetampinescc@gmail.com?subject=Disclaimer Form Submission&body=${encodeURIComponent(emailBody)}`;
+            
+            window.location.href = mailtoLink;
+        }
+    </script>
+
+</body>
+</html>
